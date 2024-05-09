@@ -84,14 +84,10 @@ export class QuickDIDProvider extends AbstractIdentifierProvider {
     const addKeyCred = await context.agent.createVerifiableCredential({
         credential: {
             '@context': ['https://www.w3.org/2018/credentials/v1'],
-            type: ['VerifiableCredential', 'DIDQuickUpdate'],
+            type: ['VerifiableCredential', 'DIDQuickUpdate', 'DIDQuickAddKey'],
             issuer: rootDid,
             issuanceDate: new Date().toISOString(),
-            credentialSubject: {
-                addOp: {
-                    keyAgreementKey: key,
-                },
-            },
+            credentialSubject: key,
         },
         proofFormat: proofFormats[0],
     })

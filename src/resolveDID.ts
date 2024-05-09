@@ -23,17 +23,21 @@ export async function resolveDID(did:string, agent: TAgent<IDataStore & ICredent
   // let numKeys = 0
   for (const cred of creds) {
     const { verifiableCredential } = cred
-    const { addOp } = verifiableCredential.credentialSubject
-    if (addOp) {
-      if (addOp.keyAgreementKey) {
-        verificationMethods = [...verificationMethods, addOp.keyAgreementKey]
-        keyAgreementKeys = [...keyAgreementKeys, addOp.keyAgreementKey.id]
-      } else if (addOp.authenticationKey) {
-        verificationMethods = [...verificationMethods, addOp.authenticationKey]
-        authenticationKeys = [...authenticationKeys, addOp.authenticationKey.id]
-      } else if (addOp.serviceEndpoint) {
-        serviceEndpoints = [...serviceEndpoints, ...addOp.serviceEndpoint]
-      }
+    // const { addOp } = verifiableCredential.credentialSubject
+    // if (addOp) {
+    //   if (addOp.keyAgreementKey) {
+    //     verificationMethods = [...verificationMethods, addOp.keyAgreementKey]
+    //     keyAgreementKeys = [...keyAgreementKeys, addOp.keyAgreementKey.id]
+    //   } else if (addOp.authenticationKey) {
+    //     verificationMethods = [...verificationMethods, addOp.authenticationKey]
+    //     authenticationKeys = [...authenticationKeys, addOp.authenticationKey.id]
+    //   } else if (addOp.serviceEndpoint) {
+    //     serviceEndpoints = [...serviceEndpoints, ...addOp.serviceEndpoint]
+    //   }
+    // }
+    if (verifiableCredential?.type?.includes('DIDQuickAddKey')) {
+      verificationMethods = [...verificationMethods, verifiableCredential.credentialSubject]
+      keyAgreementKeys = [...keyAgreementKeys, verifiableCredential.credentialSubject.id]
     }
   }
   const didDocument = {

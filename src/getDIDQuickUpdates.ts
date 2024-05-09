@@ -16,7 +16,7 @@ export async function getDIDQuickUpdates(message: any, agent: TAgent<IDataStore 
       where: [
         {
           column: 'type',
-          value: ['VerifiableCredential,DIDQuickUpdate'], 
+          value: ['VerifiableCredential,DIDQuickUpdate,DIDQuickAddKey'], 
         },
         {
           column: 'issuer',
