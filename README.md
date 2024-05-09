@@ -1,4 +1,4 @@
-# Veramo did:peer provider
+# Veramo did:quick provider
 
-This package contains an implementation of `AbstractIdentifierProvider` for the `did:peer` method.
-This enables creation and control of `did:peer` entities.
+This package contains an implementation of `AbstractIdentifierProvider` for the `did:quick` method.
+This enables creation and control of `did:quick` entities.
