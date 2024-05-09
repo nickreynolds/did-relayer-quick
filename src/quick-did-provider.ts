@@ -93,7 +93,7 @@ export class QuickDIDProvider extends AbstractIdentifierProvider {
                 },
             },
         },
-        proofFormat: 'jwt'
+        proofFormat: proofFormats[0],
     })
     console.log("relayerUrl: ", this.relayerUrl)
     const res = await fetch(`${this.relayerUrl}/add-did-quick-update`, {
