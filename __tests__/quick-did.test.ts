@@ -37,7 +37,7 @@ const ethersProvider = createEthersProvider()
 
 const quickDIDProvider = new QuickDIDProvider({
   defaultKms: 'local',
-  relayerUrl: 'http://localhost:3000',
+  relayerUrl: 'http://localhost:3131',
 })
 
 const databaseFile = ':memory:'
@@ -119,7 +119,7 @@ agent = createAgent<
                 },
             ],
             }),
-            ...quickDidResolver({ nodeEndpoint: 'http://localhost:3000/resolveDIDQuick' }),
+            ...quickDidResolver({ nodeEndpoint: 'http://localhost:3131/resolveDIDQuick' }),
         }),
         new DataStore(dbConnection),
         new DataStoreORM(dbConnection),
@@ -157,8 +157,8 @@ app.use('/resolveDIDQuick', async (req, res) => {
   res.send(result)
 })
 
-const listener = app.listen(3000, () => {
-    console.log("listening on 3000")
+const listener = app.listen(3131, () => {
+    console.log("listening on 3131")
 })
 
 afterAll(async () => {

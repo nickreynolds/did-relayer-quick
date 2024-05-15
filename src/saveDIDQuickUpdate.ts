@@ -2,6 +2,7 @@ import { IAgentContext, ICredentialIssuer, ICredentialPlugin, IDataStore, TAgent
 import { ICredentialIssuerEIP712 } from '@veramo/credential-eip712'
 import { ICredentialIssuerLD } from '@veramo/credential-ld'
 import Debug from 'debug'
+import { createWitnessHash, postLeaf } from './utils/witnessApi'
 const debug = Debug('veramo:did-provider-quick:saveDIDQuickUpdate')
 
 // type IContext = IAgentContext<IDataStore & ICredentialPlugin & ICredentialIssuerEIP712 & ICredentialIssuerLD>
@@ -15,6 +16,23 @@ export async function saveDIDQuickUpdate(message: any, agent: TAgent<IDataStore 
         if (verification.verified) {
             const credentialHash = await agent.dataStoreSaveVerifiableCredential({ verifiableCredential: credential })
             console.log("saved DIDQuickUpdate credentialHash: ", credentialHash)
+            const witHash = createWitnessHash(credentialHash)
+            const res = await postLeaf(witHash)
+            console.log("witness response: ", res)
+            console.log("akord api key: ", process.env.AKORD_API_KEY)
+            const response = await fetch('https://api.akord.com/files?tag-file-category=VerifiableCredential&tag-credential-type=QuickDIDUpdate', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Api-Key': process.env.AKORD_API_KEY || '',
+                    'Content-Type': 'text/plain'
+                },
+                body: JSON.stringify(credential)
+            })
+            if (!response.ok) {
+                throw new Error("Failed to save DIDQuickUpdate to Akord. Response: " + JSON.stringify(response))
+            }
+            console.log("akord response: ", response)
         }
         return { success: true }
     } else {

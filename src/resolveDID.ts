@@ -3,7 +3,7 @@ import { ICredentialIssuerEIP712 } from '@veramo/credential-eip712'
 import { ICredentialIssuerLD } from '@veramo/credential-ld'
 import Debug from 'debug'
 import { get } from 'http'
-import { getDIDQuickUpdates } from './getDIDQuickUpdates.js'
+import { getDIDQuickUpdates } from './getDIDQuickUpdates'
 const debug = Debug('veramo:did-provider-quick:saveDIDQuickUpdate')
 
 type IContext = IAgentContext<IResolver & IDataStore & IDataStoreORM & ICredentialPlugin & ICredentialIssuer & ICredentialIssuerEIP712 & ICredentialIssuerLD>
