@@ -117,7 +117,7 @@ export class QuickDIDProvider extends AbstractIdentifierProvider {
     }: { identifier: IIdentifier; service: IService; options?: any },
     context: IRequiredContext,
   ): Promise<any> {
-    
+    throw new Error('Method not implemented.')    
   }
 
   async removeKey(
