@@ -24,8 +24,6 @@ const arweave = Arweave.init({
     protocol: 'https'
 });
 
-dotenv.config();
-
 export async function saveDIDQuickUpdate(message: any, agent: TAgent<IDataStore & ICredentialPlugin>): Promise<any> {
     console.log("saveDIDQuickUpdate 1")
     if (message.type === 'did-quick-update' && message.media_type === 'credential+ld+json') {

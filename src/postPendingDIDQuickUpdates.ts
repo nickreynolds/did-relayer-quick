@@ -25,7 +25,7 @@ const arweave = Arweave.init({
     protocol: 'https'
 });
 
-dotenv.config();
+// dotenv.config();
 
 export async function postPendingDIDQuickUpdates(batch: string[], agent: TAgent<IDataStore & IDataStoreORM & ICredentialPlugin>): Promise<any> {
 
