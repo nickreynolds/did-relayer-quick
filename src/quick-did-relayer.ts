@@ -4,9 +4,9 @@ import Debug from 'debug'
 import { ICredentialIssuerEIP712 } from '@veramo/credential-eip712'
 // import { EthrDID } from 'ethr-did'
 import { KeyValueStore } from '@veramo/kv-store'
-import { IQuickDIDRelayer, IRequiredContext } from './IQuickDIDRelayer'
-import { saveDIDQuickUpdate } from './saveDIDQuickUpdate'
-import { postPendingDIDQuickUpdates } from './postPendingDIDQuickUpdates'
+import { IQuickDIDRelayer, IRequiredContext } from './IQuickDIDRelayer.js'
+import { saveDIDQuickUpdate } from './saveDIDQuickUpdate.js'
+import { postPendingDIDQuickUpdates } from './postPendingDIDQuickUpdates.js'
 
 const debug = Debug('veramo:did-relayer-quick')
 

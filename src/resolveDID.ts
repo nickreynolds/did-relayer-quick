@@ -3,12 +3,12 @@ import { ICredentialIssuerEIP712 } from '@veramo/credential-eip712'
 import { ICredentialIssuerLD } from '@veramo/credential-ld'
 import Debug from 'debug'
 import { get } from 'http'
-import { getDIDQuickUpdates } from './getDIDQuickUpdates'
+import { getDIDQuickUpdates } from './getDIDQuickUpdates.js'
 const debug = Debug('veramo:did-provider-quick:saveDIDQuickUpdate')
 
 type IContext = IAgentContext<IResolver & IDataStore & IDataStoreORM & ICredentialPlugin & ICredentialIssuer & ICredentialIssuerEIP712 & ICredentialIssuerLD>
 
-export async function resolveDID(did:string, agent: TAgent<IDataStore & ICredentialPlugin & ICredentialIssuerEIP712 & ICredentialIssuerLD>): Promise<DIDResolutionResult> {
+export async function resolveDID(did: string, agent: TAgent<IDataStore & ICredentialPlugin & ICredentialIssuerEIP712 & ICredentialIssuerLD>): Promise<DIDResolutionResult> {
   if (!did.startsWith('did:quick:')) {
     throw Error('DID not of type did:quick')
   }

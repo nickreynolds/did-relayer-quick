@@ -2,7 +2,7 @@ import { IAgentContext, ICredentialIssuer, ICredentialPlugin, IDataStore, TAgent
 import { ICredentialIssuerEIP712 } from '@veramo/credential-eip712'
 import { ICredentialIssuerLD } from '@veramo/credential-ld'
 import Debug from 'debug'
-import { createWitnessHash, getProof, postLeaf } from './utils/witnessApi'
+import { createWitnessHash, getProof, postLeaf } from './utils/witnessApi.js'
 import { Readable } from 'stream';
 const debug = Debug('veramo:did-provider-quick:saveDIDQuickUpdate')
 
