@@ -8,9 +8,13 @@
   "scripts": {
     "build": "tsc",
     "test": "cross-env NODE_OPTIONS=\"--experimental-vm-modules\" jest --setupFiles=dotenv/config",
-    "generate-plugin-schema": "pnpm veramo dev generate-plugin-schema"
+    "generate-plugin-schema": "pnpm veramo dev generate-plugin-schema",
+    "get-new-arweave-wallet": "pnpm tsx ./src/utils/getNewArweaveWallet.ts",
+    "load-arweave-wallet": "pnpm tsx ./src/utils/LoadArweaveWallet.ts",
+    "top-up": "pnpm tsx ./src/utils/topUpArweaveWallet.ts"
   },
   "dependencies": {
+    "@ardrive/turbo-sdk": "^1.20.2",
     "@jest/globals": "^29.7.0",
     "@transmute/credentials-context": "^0.7.0-unstable.82",
     "@types/express": "^4.17.21",
@@ -44,11 +48,15 @@
     "@veramo/utils": "^6.0.0",
     "@witnessco/client": "^0.3.1",
     "agent-explore": "^1.72.2",
+    "arweave": "^1.15.5",
+    "cross-fetch": "^4.0.0",
     "did-resolver": "^4.1.0",
+    "dotenv": "^16.4.5",
     "ethers": "^6.12.1",
     "ethr-did-resolver": "^10.1.5",
     "http": "^0.0.1-security",
     "jest": "^29.7.0",
+    "open": "^10.1.0",
     "swagger-ui-express": "^5.0.0",
     "ts-node": "^10.9.2",
     "tsx": "^4.7.2",

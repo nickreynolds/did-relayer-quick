@@ -1,43 +1,51 @@
-import { IAgentContext, ICredentialIssuer, ICredentialPlugin, IDataStore, TAgent } from '@veramo/core-types'
+import { IAgentContext, ICredentialIssuer, ICredentialPlugin, IDataStore, TAgent, VerifiableCredential } from '@veramo/core-types'
 import { ICredentialIssuerEIP712 } from '@veramo/credential-eip712'
 import { ICredentialIssuerLD } from '@veramo/credential-ld'
 import Debug from 'debug'
-import { createWitnessHash, postLeaf } from './utils/witnessApi'
+import { createWitnessHash, getProof, postLeaf } from './utils/witnessApi'
+import { Readable } from 'stream';
 const debug = Debug('veramo:did-provider-quick:saveDIDQuickUpdate')
 
-// type IContext = IAgentContext<IDataStore & ICredentialPlugin & ICredentialIssuerEIP712 & ICredentialIssuerLD>
+import {
+    ArweaveSigner,
+    TurboFactory,
+    USD,
+    WinstonToTokenAmount,
+    developmentTurboConfiguration,
+} from "@ardrive/turbo-sdk";
+import Arweave from "arweave";
 
-export async function saveDIDQuickUpdate(message: any, agent: TAgent<IDataStore & ICredentialPlugin & ICredentialIssuerEIP712 & ICredentialIssuerLD>): Promise<any> {
+import * as dotenv from "dotenv";
+import open from "open";
+
+const arweave = Arweave.init({
+    host: 'arweave.net',
+    port: 443,
+    protocol: 'https'
+});
+
+dotenv.config();
+
+export async function saveDIDQuickUpdate(message: any, agent: TAgent<IDataStore & ICredentialPlugin>): Promise<any> {
     console.log("saveDIDQuickUpdate 1")
     if (message.type === 'did-quick-update' && message.media_type === 'credential+ld+json') {
         console.log("saveDIDQuickUpdate 2")
         const credential = message.data
         const verification = await agent.verifyCredential({ credential: credential })
         if (verification.verified) {
-            const credentialHash = await agent.dataStoreSaveVerifiableCredential({ verifiableCredential: credential })
-            console.log("saved DIDQuickUpdate credentialHash: ", credentialHash)
-            const witHash = createWitnessHash(credentialHash)
-            const res = await postLeaf(witHash)
-            console.log("witness response: ", res)
-            console.log("akord api key: ", process.env.AKORD_API_KEY)
-            const response = await fetch('https://api.akord.com/files?tag-file-category=VerifiableCredential&tag-credential-type=QuickDIDUpdate', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Api-Key': process.env.AKORD_API_KEY || '',
-                    'Content-Type': 'text/plain'
-                },
-                body: JSON.stringify(credential)
-            })
-            if (!response.ok) {
-                throw new Error("Failed to save DIDQuickUpdate to Akord. Response: " + JSON.stringify(response))
+            const verifiableCredential = credential as VerifiableCredential;
+            // TODO: check credential  key validity, etc.
+            if (verifiableCredential.type?.includes('DIDQuickUpdate')) {
+                const credentialHash = await agent.dataStoreSaveVerifiableCredential({ verifiableCredential: credential })
+                const witHash = createWitnessHash(credentialHash)
+                await postLeaf(witHash)
+                return { success: true, credentialHash }
+            } else {
+                throw Error('Message not of type did-quick-update')
             }
-            console.log("akord response: ", response)
         }
-        return { success: true }
+        throw Error('Credential verification failed')
     } else {
-        throw Error('Message not of type did-quick-update')
+        throw Error('unknown error in saveDIDQuickUpdate')
     }
-//   console.log("saveDIDQuickUpdate 3")
-//   return message
 }
