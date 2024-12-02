@@ -42,10 +42,8 @@ export class QuickDIDRelayer implements IAgentPlugin {
     if (success) {
       console.log("saveCredential credentialHash: ", credentialHash)
       await this.saveToArweaveStore.set(credentialHash, true);
-      console.log("return true")
       return true;
     }
-    console.log("return false")
     return false;
   }
 
@@ -53,35 +51,6 @@ export class QuickDIDRelayer implements IAgentPlugin {
     batchSize: number,
     context: IRequiredContext,
   ): Promise<boolean> {
-
-    console.log("postPendingUpdates 1.")
-    // const batchSize = 10;
-    // async function processInBatches(
-    //   asyncIterator: AsyncIterator<[key: string, value: boolean], void, any>,
-    //   batchSize: number
-    // ): Promise<void> {
-    //   while (true) {
-    //     const batch: string[] = [];
-    //     for (let i = 0; i < batchSize; i++) {
-    //       const result = await asyncIterator.next();
-    //       if (result.done) break;
-    //       batch.push(result.value[0]);
-    //     }
-
-
-    //     console.log("batch: ", batch)
-    //     if (batch.length === 0) break; // No more items
-
-
-    //     // Process the batch
-    //     await processBatch(batch);
-    //   }
-    // }
-
-    // async function processBatch(batch: string[]) {
-    //   return postPendingDIDQuickUpdates(batch, context.agent)
-    // }
-
     const updates = this.saveToArweaveStore.getIterator();
     const batch: string[] = [];
     for (let i = 0; i < 10; i++) {
@@ -89,10 +58,6 @@ export class QuickDIDRelayer implements IAgentPlugin {
       if (result.done) break;
       batch.push(result.value[0]);
     }
-
-    console.log("context: ", context)
-    console.log("context.agent: ", context.agent)
-    console.log("batch: ", batch)
     await postPendingDIDQuickUpdates(batch, context.agent);
 
     return true;
